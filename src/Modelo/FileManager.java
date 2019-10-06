@@ -39,16 +39,37 @@ public class FileManager implements AccesoDatos {
 
 	@Override
 	public void meterEntrada(Mascota mascota, int id) {
-		// TODO Auto-generated method stub
-
+		datos.put(id, mascota);
+		sobreEscribir();
 	}
 
 	@Override
 	public void sustituyePor(HashMap<Integer, Mascota> datos) {
+		this.datos = new HashMap<>();
 		for (Entry<Integer, Mascota> entry : datos.entrySet()) {
 			meterEntrada(entry.getValue(),entry.getKey());
 		}
 
+	}
+	private void sobreEscribir() {
+		
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(fichero);
+
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		 
+			for (Entry<Integer, Mascota> entry : datos.entrySet()) {
+				bw.write(entry.getKey().toString() + "/" + entry.getValue().getNombre() + "/" + entry.getValue().getEspecie());
+				bw.newLine();
+			}
+		 
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 
 	}
 
 }

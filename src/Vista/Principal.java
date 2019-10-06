@@ -70,12 +70,14 @@ public class Principal extends JFrame {
 		panelBBDD.add(btnMigrarBBDD);
 		
 		
-
 		//Instanciamos panelFIle
-		panelFile = new JPanel(new BorderLayout());
+		panelFile = new JPanel();
 		panelFile.setName("Fichero");
 		setTable(panelFile.getName());
-		panelFile.add(new JScrollPane(tablaFile), BorderLayout.CENTER);
+		panelFile.setLayout(null);
+		JScrollPane scrollPane1 = new JScrollPane(tablaFile);
+		scrollPane1.setBounds(0, 0, 429, 210);
+		panelFile.add(scrollPane1);
 		tabbedPane.addTab("Fichero", null, panelFile, "Visualiza y modifica tu Fichero de Datos");
 		
 		btnAddToFile = new JButton("Add");
@@ -87,7 +89,7 @@ public class Principal extends JFrame {
 				abrirFormulario("Fichero");
 			}
 		});
-		panelBBDD.add(btnAddToFile);
+		panelFile.add(btnAddToFile);
 		
 		//Mostramos la ventana
 		setVisible(true);
