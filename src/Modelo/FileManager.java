@@ -49,7 +49,7 @@ public class FileManager implements AccesoDatos {
 		for (Entry<Integer, Mascota> entry : datos.entrySet()) {
 			meterEntrada(entry.getValue(),entry.getKey());
 		}
-
+		sobreEscribir();
 	}
 	private void sobreEscribir() {
 		
@@ -70,6 +70,13 @@ public class FileManager implements AccesoDatos {
 			e.printStackTrace();
 		}
 	 
+	}
+
+	@Override
+	public void borrar(int id) {
+		this.datos.remove(id);
+		sobreEscribir();
+		
 	}
 
 }

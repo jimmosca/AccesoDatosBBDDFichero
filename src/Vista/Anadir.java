@@ -18,6 +18,8 @@ public class Anadir extends JFrame{
 	private JTextField txtId;
 	private JTextField txtNombre;
 	private JTextField txtEspecie;
+	
+	private int id;
 
 	public Anadir(Controlador control) {
 		this.control = control;
@@ -77,7 +79,17 @@ public class Anadir extends JFrame{
 		});
 		setVisible(true);
 	}
+	
+	public Anadir(Controlador control, Integer id) {
+		this(control);
+		this.id = id;
+		txtId.setText(id.toString());
+			
+	}
 	private void guardar() {
+		if (control.getAlmacenamiento()=="BBDD") {
+			control.editarDatos(new Mascota(txtNombre.getText(), txtEspecie.getText()), Integer.parseInt(txtId.getText()));
+		}else
 		control.guardarDatos(new Mascota(txtNombre.getText(), txtEspecie.getText()), Integer.parseInt(txtId.getText()));
 	}
 	private void cerrar() {

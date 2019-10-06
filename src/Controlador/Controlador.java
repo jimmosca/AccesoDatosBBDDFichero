@@ -13,7 +13,7 @@ public class Controlador {
 	private Anadir formulario;
 	private HashMap<String, AccesoDatos> dataAccessManager;
 	private DefaultTableModel datos;
-	
+
 	private String almacenamiento;
 
 	public Controlador() {
@@ -37,13 +37,54 @@ public class Controlador {
 
 		return datos;
 	}
-	
+
 	public void abrirFormulario(String almacenamiento) {
 		this.almacenamiento = almacenamiento;
 		formulario = new Anadir(this);
+		ventana.setTable(almacenamiento);
 	}
+
 	public void guardarDatos(Mascota mascota, int id) {
 		dataAccessManager.get(this.almacenamiento).meterEntrada(mascota, id);
+	}
+
+	public void migrar(String almacenamiento) {
+		switch (almacenamiento) {
+		case "BBDD":
+			dataAccessManager.get("Fichero").sustituyePor(dataAccessManager.get(almacenamiento).getDatos());
+			break;
+		case "Fichero":
+			dataAccessManager.get("BBDD").sustituyePor(dataAccessManager.get(almacenamiento).getDatos());
+			break;
+
+		default:
+			break;
+		}
+	}
+	public void borrarTodos(String almacenamiento) {
+		dataAccessManager.get(almacenamiento).sustituyePor(new HashMap<>());
+	}
+
+	public void borrar(String almacenamiento, int id) {
+		dataAccessManager.get(almacenamiento).borrar(id);
+		
+	}
+
+	public void editar(String almacenamiento, int id) {
+		this.almacenamiento = almacenamiento;
+		formulario = new Anadir(this, id);
+		ventana.setTable(almacenamiento);
+		
+	}
+
+	public String getAlmacenamiento() {
+		return almacenamiento;
+	}
+
+	public void editarDatos(Mascota mascota, int id) {
+		BDManager aux = (BDManager) dataAccessManager.get("BBDD");
+		aux.editar(mascota, id);
+		
 	}
 
 }

@@ -70,15 +70,66 @@ public class BDManager implements AccesoDatos {
 
 	@Override
 	public void meterEntrada(Mascota mascota, int id) {
-		// TODO Auto-generated method stub
-
+		datos.put(id, mascota);
+		String nombre = mascota.getNombre();
+		String especie = mascota.getEspecie();
+		String query = " insert into mascotas (id, nombre, especie)" + " values (?, ?, ?)";
+		PreparedStatement pstmt;
+		try {
+			pstmt = conexion.prepareStatement(query);
+			pstmt.setInt(1, id);
+			pstmt.setString(2, nombre);
+			pstmt.setString(3, especie);
+			
+			pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void sustituyePor(HashMap<Integer, Mascota> datos) {
+		this.datos = new HashMap<>();
+		String sql = "DELETE FROM mascotas";
+		try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 		for (Entry<Integer, Mascota> entry : datos.entrySet()) {
 			meterEntrada(entry.getValue(),entry.getKey());
 		}
+	}
+
+	@Override
+	public void borrar(int id) {
+		this.datos.remove(id);
+		  String query = "delete from mascotas where id = ?";
+	      PreparedStatement pstmt;
+	      try {
+				pstmt = conexion.prepareStatement(query);
+				pstmt.setInt(1, id);
+				pstmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+	}
+
+	public void editar(Mascota mascota, int id) {
+		datos.put(id, mascota);
+		String query = "update mascotas set nombre = ?, especie = ? where id = ?";
+	      PreparedStatement pstmt;
+	      try {
+				pstmt = conexion.prepareStatement(query);
+				pstmt.setString(1, mascota.getNombre());
+				pstmt.setString(2, mascota.getEspecie());
+				pstmt.setInt(3, id);
+				pstmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
 	}
 
 }

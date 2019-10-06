@@ -14,5 +14,6 @@ public interface AccesoDatos {
 	//1. Iguala el HashMap local al recibido
 	//2. Escribe entrada por entrada
 	public void sustituyePor(HashMap<Integer,Mascota> datos);
+	public void borrar(int id);
 
 }

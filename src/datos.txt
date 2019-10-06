@@ -1,3 +1,4 @@
-1/Mateo/Huron
-2/Esteban/Raton
-3/Bifi/Boa constrictor
+1/nela/gato
+2/mateo/huron
+3/Pedro/Humano
+6/Nemo/Pez Payaso
