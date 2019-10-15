@@ -20,6 +20,7 @@ public class Controlador {
 		this.dataAccessManager = new HashMap<>();
 		dataAccessManager.put("BBDD", new BDManager());
 		dataAccessManager.put("Fichero", new FileManager());
+		dataAccessManager.put("Hibernate", new HibernateManager());
 		this.ventana = new Principal(this);
 	}
 

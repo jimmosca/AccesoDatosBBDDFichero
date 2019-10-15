@@ -4,9 +4,34 @@ public class Mascota {
 	
 	private String nombre;
 	private String especie;
+	private int id;
+	public Mascota(int id, String nombre, String especie) {
+		this(nombre, especie);
+		this.id = id;
+	}
 	
 	public Mascota(String nombre, String especie) {
 		this.nombre = nombre;
+		this.especie = especie;
+	}
+	
+	public Mascota() {
+		
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setEspecie(String especie) {
 		this.especie = especie;
 	}
 
