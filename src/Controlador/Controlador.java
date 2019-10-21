@@ -45,8 +45,8 @@ public class Controlador {
 		ventana.setTable(almacenamiento);
 	}
 
-	public void guardarDatos(Mascota mascota, int id) {
-		dataAccessManager.get(this.almacenamiento).meterEntrada(mascota, id);
+	public void guardarDatos(Mascota mascota) {
+		dataAccessManager.get(this.almacenamiento).meterEntrada(mascota);
 	}
 
 	public void migrar(String almacenamiento) {
@@ -82,9 +82,9 @@ public class Controlador {
 		return almacenamiento;
 	}
 
-	public void editarDatos(Mascota mascota, int id) {
-		BDManager aux = (BDManager) dataAccessManager.get("BBDD");
-		aux.editar(mascota, id);
+	public void editarDatos(Mascota mascota) {
+		dataAccessManager.get(getAlmacenamiento()).editarEntrada(mascota);
+		
 		
 	}
 

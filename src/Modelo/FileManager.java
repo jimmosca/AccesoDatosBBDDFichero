@@ -22,7 +22,7 @@ public class FileManager implements AccesoDatos {
 			String line;
 			while ((line = reader.readLine())!=null) {
 				String[] campos = line.split("/");
-				datos.put(Integer.parseInt(campos[0]), new Mascota(campos[1], campos[2]));
+				datos.put(Integer.parseInt(campos[0]), new Mascota(Integer.parseInt(campos[0]),campos[1], campos[2]));
 			}
 			reader.close();
 		} catch (IOException e) {
@@ -38,8 +38,8 @@ public class FileManager implements AccesoDatos {
 	}
 
 	@Override
-	public void meterEntrada(Mascota mascota, int id) {
-		datos.put(id, mascota);
+	public void meterEntrada(Mascota mascota) {
+		datos.put(mascota.getId(), mascota);
 		sobreEscribir();
 	}
 
@@ -47,7 +47,7 @@ public class FileManager implements AccesoDatos {
 	public void sustituyePor(HashMap<Integer, Mascota> datos) {
 		this.datos = new HashMap<>();
 		for (Entry<Integer, Mascota> entry : datos.entrySet()) {
-			meterEntrada(entry.getValue(),entry.getKey());
+			meterEntrada(entry.getValue());
 		}
 		sobreEscribir();
 	}
@@ -76,6 +76,12 @@ public class FileManager implements AccesoDatos {
 	public void borrar(int id) {
 		this.datos.remove(id);
 		sobreEscribir();
+		
+	}
+
+	@Override
+	public void editarEntrada(Mascota mascota) {
+		meterEntrada(mascota);
 		
 	}
 

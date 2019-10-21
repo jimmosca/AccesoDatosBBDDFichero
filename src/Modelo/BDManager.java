@@ -54,7 +54,7 @@ public class BDManager implements AccesoDatos {
 					contenido[col - 1] = rset.getString(col);
 				}
 				
-				datos.put(Integer.parseInt(contenido[0]), new Mascota(contenido[1], contenido[2]));
+				datos.put(Integer.parseInt(contenido[0]), new Mascota(Integer.parseInt(contenido[0]), contenido[1], contenido[2]));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -69,15 +69,15 @@ public class BDManager implements AccesoDatos {
 	}
 
 	@Override
-	public void meterEntrada(Mascota mascota, int id) {
-		datos.put(id, mascota);
+	public void meterEntrada(Mascota mascota) {
+		datos.put(mascota.getId(), mascota);
 		String nombre = mascota.getNombre();
 		String especie = mascota.getEspecie();
 		String query = " insert into mascotas (id, nombre, especie)" + " values (?, ?, ?)";
 		PreparedStatement pstmt;
 		try {
 			pstmt = conexion.prepareStatement(query);
-			pstmt.setInt(1, id);
+			pstmt.setInt(1, mascota.getId());
 			pstmt.setString(2, nombre);
 			pstmt.setString(3, especie);
 			
@@ -90,14 +90,14 @@ public class BDManager implements AccesoDatos {
 	@Override
 	public void sustituyePor(HashMap<Integer, Mascota> datos) {
 		this.datos = new HashMap<>();
-		String sql = "DELETE FROM mascotas";
+		String sql = "truncate table mascotas";
 		try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		for (Entry<Integer, Mascota> entry : datos.entrySet()) {
-			meterEntrada(entry.getValue(),entry.getKey());
+			meterEntrada(entry.getValue());
 		}
 	}
 
@@ -115,16 +115,18 @@ public class BDManager implements AccesoDatos {
 			}
 		
 	}
-
-	public void editar(Mascota mascota, int id) {
-		datos.put(id, mascota);
-		String query = "update mascotas set nombre = ?, especie = ? where id = ?";
+	
+	@Override
+	public void editarEntrada(Mascota mascota) {
+		datos.put(mascota.getId(), mascota);
+		String query = "update mascotas set id = ?, nombre = ?, especie = ? where id = ?";
 	      PreparedStatement pstmt;
 	      try {
 				pstmt = conexion.prepareStatement(query);
-				pstmt.setString(1, mascota.getNombre());
-				pstmt.setString(2, mascota.getEspecie());
-				pstmt.setInt(3, id);
+				pstmt.setInt(1, mascota.getId());
+				pstmt.setString(2, mascota.getNombre());
+				pstmt.setString(3, mascota.getEspecie());
+				pstmt.setInt(4, mascota.getId());
 				pstmt.execute();
 			} catch (SQLException e) {
 				e.printStackTrace();

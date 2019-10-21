@@ -1,6 +1,9 @@
 package Modelo;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
@@ -11,32 +14,57 @@ public class HibernateManager implements AccesoDatos{
 	public HibernateManager() {
 		this.session = new Configuration().configure().buildSessionFactory().openSession();
 		datos = new HashMap<>();
-		System.out.println("Hibernate no ha petado");
+		cargarDatos();
 	}
 	@Override
 	public void cargarDatos() {
-		// TODO Auto-generated method stub
+		Query q = session.createQuery("select m from Mascota m");
+		List<Mascota> results = q.list();
+
+		Iterator<Mascota> mascotasIterator = results.iterator();
+		while (mascotasIterator.hasNext()) {
+			Mascota mascota = mascotasIterator.next();
+			datos.put(mascota.getId(), mascota);
+		}
+		session.clear();
 		
 	}
 	@Override
 	public HashMap<Integer, Mascota> getDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return datos;
 	}
 	@Override
-	public void meterEntrada(Mascota mascota, int id) {
-		// TODO Auto-generated method stub
-		
+	public void meterEntrada(Mascota mascota) {
+		datos.put(mascota.getId(), mascota);
+		session.beginTransaction();
+		session.save(mascota);
+		session.getTransaction().commit();
+		session.clear();
 	}
 	@Override
 	public void sustituyePor(HashMap<Integer, Mascota> datos) {
-		// TODO Auto-generated method stub
-		
+		this.datos = new HashMap<>();
+		session.beginTransaction();
+		session.createQuery("delete from Mascota").executeUpdate();
+		session.getTransaction().commit();
+		for (Entry<Integer, Mascota> entry : datos.entrySet()) {
+			meterEntrada(entry.getValue());
+		}
+		session.clear();
 	}
 	@Override
 	public void borrar(int id) {
-		// TODO Auto-generated method stub
+		session.beginTransaction();
+		session.delete(this.datos.get(id));
+		session.getTransaction().commit();
+		session.clear();
+		this.datos.remove(id);
 		
+	}
+	@Override
+	public void editarEntrada(Mascota mascota) {
+		datos.put(mascota.getId(), mascota);		
 	}
 	
 }

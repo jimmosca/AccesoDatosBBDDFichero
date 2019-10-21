@@ -1,4 +1,4 @@
 1/nela/gato
 2/mateo/huron
 3/Pedro/Humano
-6/Nemo/Pez Payaso
+6/Estuardo/Esturion

@@ -6,14 +6,11 @@ public class Mascota {
 	private String especie;
 	private int id;
 	public Mascota(int id, String nombre, String especie) {
-		this(nombre, especie);
+		this.nombre = nombre;
+		this.especie = especie;
 		this.id = id;
 	}
 	
-	public Mascota(String nombre, String especie) {
-		this.nombre = nombre;
-		this.especie = especie;
-	}
 	
 	public Mascota() {
 		

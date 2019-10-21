@@ -40,6 +40,15 @@ public class Principal extends JFrame {
 	private JButton btnTruncateFile;
 	private JButton btnEditarFile;
 
+	// Hibernate Components
+	private JTable tablaHibernate;
+	private JPanel panelHibernate;
+	private JButton btnAddToHibernate;
+	private JButton btnMigrarHibernate;
+	private JButton btnBorrar1Hibernate;
+	private JButton btnTruncateHibernate;
+	private JButton btnEditarHibernate;
+
 	public Principal(Controlador control) {
 		this.control = control;
 		setBounds(100, 100, 450, 300);
@@ -141,6 +150,7 @@ public class Principal extends JFrame {
 		panelFile.add(scrollPane1);
 		tabbedPane.addTab("Fichero", null, panelFile, "Visualiza y modifica tu Fichero de Datos");
 
+		// Anhadir File
 		btnAddToFile = new JButton("Add");
 		btnAddToFile.setBounds(0, 210, 90, 23);
 		btnAddToFile.addActionListener(new ActionListener() {
@@ -153,6 +163,7 @@ public class Principal extends JFrame {
 		});
 		panelFile.add(btnAddToFile);
 
+		// Migrar File
 		btnMigrarFile = new JButton("Migrar");
 		btnMigrarFile.setBounds(90, 210, 90, 23);
 		btnMigrarFile.addActionListener(new ActionListener() {
@@ -166,7 +177,7 @@ public class Principal extends JFrame {
 		});
 		panelFile.add(btnMigrarFile);
 
-		// Eliminar 1 a Fichero
+		// Eliminar 1 a File
 		btnBorrar1File = new JButton("Borrar1");
 		btnBorrar1File.setBounds(180, 210, 90, 23);
 		btnBorrar1File.addActionListener(new ActionListener() {
@@ -199,22 +210,102 @@ public class Principal extends JFrame {
 		btnEditarFile.setBounds(360, 210, 90, 23);
 		btnEditarFile.addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						Object aux = tablaFile.getValueAt(tablaFile.getSelectedRow(), 0);
-						if (aux != null) {
-							editar("Fichero", Integer.parseInt((String) aux));
-							setTable("Fichero");
-						}
-					}
-				});
-				panelFile.add(btnEditarFile);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object aux = tablaFile.getValueAt(tablaFile.getSelectedRow(), 0);
+				if (aux != null) {
+					editar("Fichero", Integer.parseInt((String) aux));
+					setTable("Fichero");
+				}
+			}
+		});
+		panelFile.add(btnEditarFile);
+
+		// Instanciamos panelHibernate
+		panelHibernate = new JPanel();
+		tablaHibernate = new JTable();
+		setTable("Hibernate");
+		panelHibernate.setLayout(null);
+		JScrollPane scrollPane2 = new JScrollPane(tablaHibernate);
+		scrollPane2.setBounds(0, 0, 429, 210);
+		panelHibernate.add(scrollPane2);
+		tabbedPane.addTab("Hibernate", null, panelHibernate, "Visualiza y modifica tu BBDD Hibernate");
+		// Añadir a Hibernate
+		btnAddToHibernate = new JButton("Add");
+		btnAddToHibernate.setBounds(0, 210, 90, 23);
+		btnAddToHibernate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				abrirFormulario("Hibernate");
+				setTable("Hibernate");
+			}
+		});
+		panelHibernate.add(btnAddToHibernate);
+
+		// Migrar Hibernate
+		btnMigrarHibernate = new JButton("Migrar");
+		btnMigrarHibernate.setBounds(90, 210, 90, 23);
+		btnMigrarHibernate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				migrar("Hibernate");
+				setTable("Fichero");
+
+			}
+		});
+		panelHibernate.add(btnMigrarHibernate);
+
+		// Eliminar 1 a Hibernate
+		btnBorrar1Hibernate = new JButton("Borrar1");
+		btnBorrar1Hibernate.setBounds(180, 210, 90, 23);
+		btnBorrar1Hibernate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object aux = tablaHibernate.getValueAt(tablaHibernate.getSelectedRow(), 0);
+				if (aux != null) {
+					borrar("Hibernate", Integer.parseInt((String) aux));
+					setTable("Hibernate");
+				}
+
+			}
+		});
+		panelHibernate.add(btnBorrar1Hibernate);
+
+		// EliminarHibernate
+		btnTruncateHibernate = new JButton("Eliminar");
+		btnTruncateHibernate.setBounds(270, 210, 90, 23);
+		btnTruncateHibernate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				borrarTodos("Hibernate");
+				setTable("Hibernate");
+			}
+		});
+		panelHibernate.add(btnTruncateHibernate);
+
+		// EditarHibernate
+		btnEditarHibernate = new JButton("Editar");
+		btnEditarHibernate.setBounds(360, 210, 90, 23);
+		btnEditarHibernate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object aux = tablaHibernate.getValueAt(tablaHibernate.getSelectedRow(), 0);
+				if (aux != null) {
+					editar("Hibernate", Integer.parseInt((String) aux));
+					setTable("Hibernate");
+				}
+			}
+		});
+		panelHibernate.add(btnEditarHibernate);
 
 		// Mostramos la ventana
 		setVisible(true);
 	}
-
-	
 
 	public void setTable(String almacenamiento) {
 		DefaultTableModel aux = control.getDatos(almacenamiento);
@@ -227,6 +318,9 @@ public class Principal extends JFrame {
 
 		case "Fichero":
 			tablaFile.setModel(aux);
+			break;
+		case "Hibernate":
+			tablaHibernate.setModel(aux);
 			break;
 		default:
 			break;
@@ -249,9 +343,10 @@ public class Principal extends JFrame {
 	private void borrar(String almacenamiento, int id) {
 		control.borrar(almacenamiento, id);
 	}
+
 	private void editar(String almacenamiento, int id) {
 		control.editar(almacenamiento, id);
-		
+
 	}
 
 }
