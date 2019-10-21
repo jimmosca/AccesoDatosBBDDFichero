@@ -64,7 +64,11 @@ public class HibernateManager implements AccesoDatos{
 	}
 	@Override
 	public void editarEntrada(Mascota mascota) {
-		datos.put(mascota.getId(), mascota);		
+		datos.put(mascota.getId(), mascota);	
+		session.beginTransaction();
+		session.merge(mascota);
+		session.getTransaction().commit();
+		session.clear();
 	}
 	
 }
