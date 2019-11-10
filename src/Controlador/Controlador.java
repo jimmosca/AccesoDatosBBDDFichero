@@ -21,6 +21,7 @@ public class Controlador {
 		dataAccessManager.put("BBDD", new BDManager());
 		dataAccessManager.put("Fichero", new FileManager());
 		dataAccessManager.put("Hibernate", new HibernateManager());
+		dataAccessManager.put("Mongo", new MongoManager());
 		this.ventana = new Principal(this);
 	}
 
@@ -49,18 +50,8 @@ public class Controlador {
 		dataAccessManager.get(this.almacenamiento).meterEntrada(mascota);
 	}
 
-	public void migrar(String almacenamiento) {
-		switch (almacenamiento) {
-		case "BBDD":
-			dataAccessManager.get("Fichero").sustituyePor(dataAccessManager.get(almacenamiento).getDatos());
-			break;
-		case "Fichero":
-			dataAccessManager.get("BBDD").sustituyePor(dataAccessManager.get(almacenamiento).getDatos());
-			break;
-
-		default:
-			break;
-		}
+	public void migrar(String actual, String nuevo) {
+		dataAccessManager.get(actual).sustituyePor(dataAccessManager.get(nuevo).getDatos());
 	}
 	public void borrarTodos(String almacenamiento) {
 		dataAccessManager.get(almacenamiento).sustituyePor(new HashMap<>());
