@@ -10,6 +10,10 @@ import Vista.*;
 
 public class Controlador {
 	private Principal ventana;
+	public Principal getVentana() {
+		return ventana;
+	}
+
 	private Anadir formulario;
 	private HashMap<String, AccesoDatos> dataAccessManager;
 	private DefaultTableModel datos;
@@ -22,6 +26,7 @@ public class Controlador {
 		dataAccessManager.put("Fichero", new FileManager());
 		dataAccessManager.put("Hibernate", new HibernateManager());
 		dataAccessManager.put("Mongo", new MongoManager());
+		dataAccessManager.put("ClienteServidor", new ServidorManager());
 		this.ventana = new Principal(this);
 	}
 
@@ -43,7 +48,6 @@ public class Controlador {
 	public void abrirFormulario(String almacenamiento) {
 		this.almacenamiento = almacenamiento;
 		formulario = new Anadir(this);
-		ventana.setTable(almacenamiento);
 	}
 
 	public void guardarDatos(Mascota mascota) {
@@ -65,7 +69,6 @@ public class Controlador {
 	public void editar(String almacenamiento, int id) {
 		this.almacenamiento = almacenamiento;
 		formulario = new Anadir(this, id);
-		ventana.setTable(almacenamiento);
 		
 	}
 
@@ -75,8 +78,6 @@ public class Controlador {
 
 	public void editarDatos(Mascota mascota) {
 		dataAccessManager.get(getAlmacenamiento()).editarEntrada(mascota);
-		
-		
 	}
 
 }

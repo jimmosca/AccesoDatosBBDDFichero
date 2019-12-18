@@ -22,6 +22,8 @@ public class Principal extends JFrame {
 	private JTabbedPane tabbedPane;
 	private HashMap<String, PanelAlmacenamiento> paneles;
 	
+	String[] almacenamientos = { "BBDD", "Fichero", "Hibernate", "Mongo", "ClienteServidor" };
+	
 	public Principal(Controlador control) {
 		this.control = control;
 		setBounds(100, 100, 450, 300);
@@ -44,7 +46,6 @@ public class Principal extends JFrame {
 
 	private void abrirFormulario(String almacenamiento) {
 		control.abrirFormulario(almacenamiento);
-		setTable(almacenamiento);
 	}
 
 	private void migrar(String actual, String nuevo) {
@@ -65,16 +66,15 @@ public class Principal extends JFrame {
 	}
 
 	private String openDialog() {
-		String[] selectionValues = { "BBDD", "Fichero", "Hibernate", "Mongo" };
+		
 		String selection = JOptionPane.showInputDialog(null, "¿De que almacenamiento quieres importar?",
-				"Importar Almacenamiento", JOptionPane.QUESTION_MESSAGE, null, selectionValues, selectionValues[0])
+				"Importar Almacenamiento", JOptionPane.QUESTION_MESSAGE, null, almacenamientos, almacenamientos[0])
 				.toString();
 		return selection;
 	}
 
 	private void cargarPaneles() {
 		paneles = new HashMap<>();
-		String[] almacenamientos = { "BBDD", "Fichero", "Hibernate", "Mongo"};
 		for (String almacenamiento : almacenamientos) {
 			paneles.put(almacenamiento, new PanelAlmacenamiento()) ;
 			

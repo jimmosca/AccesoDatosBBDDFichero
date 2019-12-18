@@ -20,6 +20,7 @@ public class Anadir extends JFrame {
 	private JTextField txtEspecie;
 
 	private int id;
+	private boolean isEdit;
 
 	public Anadir(Controlador control) {
 		this.control = control;
@@ -85,13 +86,17 @@ public class Anadir extends JFrame {
 		this.id = id;
 		txtId.setText(id.toString());
 		txtId.setEnabled(false);
-
+		isEdit = true;
 	}
 
 	private void guardar() {
-
-		control.editarDatos(new Mascota(Integer.parseInt(txtId.getText()), txtNombre.getText(), txtEspecie.getText()));
-
+		if (isEdit) {
+			control.editarDatos(
+					new Mascota(Integer.parseInt(txtId.getText()), txtNombre.getText(), txtEspecie.getText()));
+		} else
+			control.guardarDatos(
+					new Mascota(Integer.parseInt(txtId.getText()), txtNombre.getText(), txtEspecie.getText()));
+		this.control.getVentana().setTable(control.getAlmacenamiento());
 		this.cerrar();
 	}
 
