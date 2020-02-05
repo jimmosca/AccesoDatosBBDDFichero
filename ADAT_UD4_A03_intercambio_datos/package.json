@@ -1,0 +1,29 @@
+{
+  "name": "adat_ud4_a03_intercambio_datos",
+  "version": "1.0.0",
+  "description": "API REST para ser utilizada en el proyecto de intercambio a datos",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimmosca/rest_api_nodejs.git"
+  },
+  "author": "Jaime Casado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimmosca/rest_api_nodejs/issues"
+  },
+  "homepage": "https://github.com/jimmosca/rest_api_nodejs#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "sequelize-cli": "^5.5.1"
+  }
+}

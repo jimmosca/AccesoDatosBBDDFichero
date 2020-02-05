@@ -11,7 +11,7 @@ import Controlador.ApiRequests;
 
 public class ServidorManager implements AccesoDatos {
 	ApiRequests encargadoPeticiones;
-	private String SERVER_PATH, GET_PET, SET_PET;
+	private String SERVER_PATH;
 
 	private HashMap<Integer, Mascota> datos;
 
@@ -19,23 +19,22 @@ public class ServidorManager implements AccesoDatos {
 		encargadoPeticiones = new ApiRequests();
 		datos = new HashMap<>();
 
-		SERVER_PATH = "http://localhost/ADAT_UD4_A01_IntercambioDatos/";
-		GET_PET = "leeMascotas.php";
-		SET_PET = "modificaMascota.php";
+		SERVER_PATH = "http://localhost:9000";
+		
 		cargarDatos();
 	}
 
 	@Override
 	public void cargarDatos() {
-		String url = SERVER_PATH + GET_PET;
+		String url = SERVER_PATH;
 		try {
 			String response = encargadoPeticiones.getRequest(url);
 			JSONArray respuesta = (JSONArray) JSONValue.parse(response);
 			for (Object object : respuesta) {
 				JSONObject row = (JSONObject) object;
-				int id = Integer.parseInt((String) row.get("id"));
-				String nombre = (String) row.get("nombre");
-				String especie = (String) row.get("especie");
+				int id = ((Long) row.get("ID")).intValue();
+				String nombre = (String) row.get("Nombre");
+				String especie = (String) row.get("Especie");
 				datos.put(id, new Mascota(id, nombre, especie));
 			}
 
@@ -53,12 +52,11 @@ public class ServidorManager implements AccesoDatos {
 
 	@Override
 	public void meterEntrada(Mascota mascota) {
-		String url = SERVER_PATH + SET_PET;
+		String url = SERVER_PATH + "/" + mascota.getId();
 		JSONObject jsonMascota = new JSONObject();
 		datos.put(mascota.getId(), mascota);
 
-		jsonMascota.put("operacion", "insertar");
-		jsonMascota.put("id", mascota.getId());
+		
 		jsonMascota.put("nombre", mascota.getNombre());
 		jsonMascota.put("especie", mascota.getEspecie());
 
@@ -76,11 +74,9 @@ public class ServidorManager implements AccesoDatos {
 
 	@Override
 	public void editarEntrada(Mascota mascota) {
-		String url = SERVER_PATH + SET_PET;
+		String url = SERVER_PATH;
 		JSONObject jsonMascota = new JSONObject();
 		datos.put(mascota.getId(), mascota);
-
-		jsonMascota.put("operacion", "editar");
 		jsonMascota.put("id", mascota.getId());
 		jsonMascota.put("nombre", mascota.getNombre());
 		jsonMascota.put("especie", mascota.getEspecie());
@@ -88,7 +84,7 @@ public class ServidorManager implements AccesoDatos {
 		String json = jsonMascota.toJSONString();
 		String respuesta = "";
 		try {
-			respuesta = encargadoPeticiones.postRequest(url, json);
+			respuesta = encargadoPeticiones.putRequest(url, json);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,11 +96,8 @@ public class ServidorManager implements AccesoDatos {
 
 	@Override
 	public void sustituyePor(HashMap<Integer, Mascota> datos) {
-		String url = SERVER_PATH + SET_PET;
+		String url = SERVER_PATH;
 		JSONObject jsonMensaje = new JSONObject();
-		
-		
-		jsonMensaje.put("operacion", "sustituir");
 		this.datos = datos;
 		JSONArray jsonMascotas = new JSONArray();
 		JSONObject jsonMascota;
@@ -133,18 +126,14 @@ public class ServidorManager implements AccesoDatos {
 
 	@Override
 	public void borrar(int id) {
-		String url = SERVER_PATH + SET_PET;
+		String url = SERVER_PATH + "/" + id;
 		JSONObject jsonMascota = new JSONObject();
 		datos.remove(id);
 
-		jsonMascota.put("operacion", "borrar");
-		jsonMascota.put("id", id);
-
-		String json = jsonMascota.toJSONString();
 		String respuesta = "";
 
 		try {
-			respuesta = encargadoPeticiones.postRequest(url, json);
+			respuesta = encargadoPeticiones.deleteRequest(url);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

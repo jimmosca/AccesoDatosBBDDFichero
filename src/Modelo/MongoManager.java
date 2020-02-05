@@ -31,7 +31,7 @@ public class MongoManager implements AccesoDatos {
 
 	@Override
 	public HashMap<Integer, Mascota> getDatos() {
-		return this.datos;
+		return new HashMap<>();
 	}
 
 	@Override
